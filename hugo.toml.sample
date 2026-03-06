@@ -1,0 +1,102 @@
+# =============================================================================
+# hugo.toml — サンプル設定（hugo-theme-shizuka 用）
+# Hugo v0.156.0 以上を想定
+# =============================================================================
+
+baseURL  = "https://example.github.io/"
+title    = "サイト名"
+theme    = "hugo-theme-shizuka"
+
+# 日本語設定
+languageCode          = "ja"
+DefaultContentLanguage = "ja"
+hasCJKLanguage        = true
+
+# 有効にすると記事本文の推定読み時間が正確になる
+# enableInlineShortcodes = true
+
+# シンタックスハイライト（Chroma）
+[markup]
+  [markup.highlight]
+    style              = "github"       # テーマ名（monokai / github / dracula など）
+    lineNos            = false
+    noClasses          = true           # インライン CSS を生成（外部 CSS 不要）
+    tabWidth           = 4
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true                     # HTML タグを記事内で使いたい場合
+
+# ---------------------------------------------------------------------------
+# サイトパラメータ
+# ---------------------------------------------------------------------------
+[params]
+  description = "趣味のページです。"
+
+[params.author]
+  name = "your name"
+
+# ---------------------------------------------------------------------------
+# タクソノミー（カテゴリなし、タグのみ使用）
+# ---------------------------------------------------------------------------
+[taxonomies]
+  tag = "tags"
+
+# ---------------------------------------------------------------------------
+# 出力フォーマット（RSS と検索用 JSON を有効化）
+# ---------------------------------------------------------------------------
+[outputs]
+  home    = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+
+# ---------------------------------------------------------------------------
+# メニュー（ヘッダーナビに表示するセクションを列挙）
+# ---------------------------------------------------------------------------
+[menu]
+
+  [[menu.main]]
+    identifier = "diary"
+    name       = "日記"
+    url        = "/diary/"
+    weight     = 10
+
+  [[menu.main]]
+    identifier = "disc-review"
+    name       = "ディスクレビュー"
+    url        = "/disc-review/"
+    weight     = 20
+
+  [[menu.main]]
+    identifier = "programming"
+    name       = "プログラミング"
+    url        = "/programming/"
+    weight     = 30
+
+  [[menu.main]]
+    identifier = "ds"
+    name       = "データサイエンス"
+    url        = "/ds/"
+    weight     = 40
+
+  [[menu.main]]
+    identifier = "music"
+    name       = "音楽雑記"
+    url        = "/music/"
+    weight     = 50
+
+  [[menu.main]]
+    identifier = "natsumen"
+    name       = "なつめん"
+    url        = "/natsumen/"
+    weight     = 60
+
+  [[menu.main]]
+    identifier = "tags"
+    name       = "タグ"
+    url        = "/tags/"
+    weight     = 200
+
+  [[menu.main]]
+    identifier = "search"
+    name       = "検索"
+    url        = "/search/"
+    weight     = 210

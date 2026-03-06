@@ -1,0 +1,21 @@
+{{ define "main" }}
+<h1 class="page-title">タグ: {{ .Title }}</h1>
+
+{{- $paginator := .Paginate .Pages -}}
+<ul class="post-list">
+  {{- range $paginator.Pages }}
+  <li class="post-list-item">
+    <div class="post-meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+      {{- with .Section }}
+      <span><a href="{{ ($.Site.GetPage (printf "/%s" .)).RelPermalink }}">{{ ($.Site.GetPage (printf "/%s" .)).Title }}</a></span>
+      {{- end }}
+    </div>
+    <div class="post-title">
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+    </div>
+  </li>
+  {{- end }}
+</ul>
+{{- partial "pagination.html" $paginator }}
+{{ end }}

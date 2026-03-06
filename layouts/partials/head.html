@@ -1,0 +1,44 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+{{- /* タイトル */}}
+<title>
+  {{- if .IsHome -}}
+    {{ .Site.Title }}
+  {{- else -}}
+    {{ .Title }} | {{ .Site.Title }}
+  {{- end -}}
+</title>
+
+{{- /* 説明文 */}}
+{{- $desc := .Description | default .Site.Params.description -}}
+{{- with $desc }}
+<meta name="description" content="{{ . }}">
+{{- end }}
+
+{{- /* OGP 基本 */}}
+<meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+{{- with $desc }}
+<meta property="og:description" content="{{ . }}">
+{{- end }}
+<meta property="og:site_name" content="{{ .Site.Title }}">
+
+{{- /* カノニカル */}}
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{- /* RSS */}}
+{{- with .OutputFormats.Get "RSS" }}
+<link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .Permalink }}">
+{{- end }}
+
+{{- /* CSS（Hugo Pipes でフィンガープリント付きバンドル）*/}}
+{{- $css := resources.Get "css/main.css" | fingerprint -}}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}">
+
+{{- /* ファビコン */}}
+{{- with .Site.Params.favicon }}
+<link rel="icon" href="{{ . | absURL }}">
+{{- end }}

@@ -1,0 +1,24 @@
+{{- $pager := . -}}
+{{- if gt $pager.TotalPages 1 -}}
+<nav class="pagination" aria-label="ページネーション">
+  {{- if $pager.HasPrev }}
+  <a href="{{ $pager.Prev.URL }}" aria-label="前のページ">&laquo; 前へ</a>
+  {{- else }}
+  <span class="disabled">&laquo; 前へ</span>
+  {{- end }}
+
+  {{- range $pager.Pagers }}
+  {{- if eq . $pager }}
+  <span class="active" aria-current="page">{{ .PageNumber }}</span>
+  {{- else }}
+  <a href="{{ .URL }}">{{ .PageNumber }}</a>
+  {{- end }}
+  {{- end }}
+
+  {{- if $pager.HasNext }}
+  <a href="{{ $pager.Next.URL }}" aria-label="次のページ">次へ &raquo;</a>
+  {{- else }}
+  <span class="disabled">次へ &raquo;</span>
+  {{- end }}
+</nav>
+{{- end -}}

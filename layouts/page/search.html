@@ -1,0 +1,111 @@
+{{ define "main" }}
+<h1 class="page-title">検索</h1>
+
+<form class="search-form" id="search-form" role="search" onsubmit="return false;">
+  <input
+    type="search"
+    id="search-input"
+    class="search-input"
+    placeholder="キーワードを入力..."
+    aria-label="検索キーワード"
+    autocomplete="off"
+  >
+  <button type="submit" class="search-button" onclick="doSearch()">検索</button>
+</form>
+
+<p id="search-status" style="color:#888; font-size:0.875rem;"></p>
+<ul id="search-results"></ul>
+
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7/dist/fuse.min.js"></script>
+<script>
+(function () {
+  var INDEX_URL = "{{ (printf "%s" .Site.BaseURL) | strings.TrimRight "/" }}/index.json";
+  var fuse;
+  var pages = [];
+
+  function normalize(s) {
+    return (s || "").trim();
+  }
+
+  function renderResults(results) {
+    var list = document.getElementById("search-results");
+    var status = document.getElementById("search-status");
+    list.innerHTML = "";
+
+    if (results.length === 0) {
+      status.textContent = "該当する記事が見つかりませんでした。";
+      return;
+    }
+    status.textContent = results.length + " 件見つかりました。";
+
+    results.forEach(function (r) {
+      var item = r.item;
+      var li = document.createElement("li");
+      var titleEl = document.createElement("div");
+      titleEl.className = "result-title";
+      var a = document.createElement("a");
+      a.href = item.url;
+      a.textContent = item.title;
+      titleEl.appendChild(a);
+
+      var metaEl = document.createElement("div");
+      metaEl.className = "result-meta";
+      metaEl.textContent = item.date + (item.section ? " · " + item.section : "");
+
+      var summaryEl = document.createElement("p");
+      summaryEl.style.fontSize = "0.85rem";
+      summaryEl.style.color = "#555";
+      summaryEl.style.margin = "0.2rem 0 0";
+      summaryEl.textContent = item.summary ? item.summary.slice(0, 120) + "…" : "";
+
+      li.appendChild(titleEl);
+      li.appendChild(metaEl);
+      if (item.summary) li.appendChild(summaryEl);
+      list.appendChild(li);
+    });
+  }
+
+  function doSearch() {
+    var query = normalize(document.getElementById("search-input").value);
+    var status = document.getElementById("search-status");
+    if (!query) {
+      document.getElementById("search-results").innerHTML = "";
+      status.textContent = "";
+      return;
+    }
+    if (!fuse) {
+      status.textContent = "インデックス読み込み中...";
+      return;
+    }
+    renderResults(fuse.search(query));
+  }
+
+  // インデックス取得
+  fetch(INDEX_URL)
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      pages = data;
+      fuse = new Fuse(pages, {
+        keys: [
+          { name: "title",   weight: 0.5 },
+          { name: "summary", weight: 0.3 },
+          { name: "tags",    weight: 0.2 }
+        ],
+        threshold: 0.4,
+        includeScore: true
+      });
+    })
+    .catch(function (err) {
+      console.error("検索インデックスの取得に失敗しました:", err);
+    });
+
+  // Enter キーでも検索
+  document.getElementById("search-input").addEventListener("keyup", function (e) {
+    if (e.key === "Enter") doSearch();
+  });
+
+  // グローバルに公開
+  window.doSearch = doSearch;
+})();
+</script>
+{{ end }}

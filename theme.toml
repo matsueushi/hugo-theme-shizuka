@@ -1,0 +1,8 @@
+name        = "hugo-theme-shizuka"
+license     = "MIT"
+licenselink = "https://opensource.org/licenses/MIT"
+description = "シンプルな日本語ネイティブ Hugo テーマ"
+min_version = "0.156.0"
+
+[author]
+  name     = "matsueushi"
