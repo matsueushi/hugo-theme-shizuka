@@ -1,47 +1,39 @@
 {{ define "main" }}
 <h1 class="page-title">{{ .Title }}</h1>
 
-{{- /* セクション説明文（_index.md に content があれば表示）*/}}
 {{- with .Content }}
 <div class="post-content">{{ . }}</div>
 {{- end }}
 
-{{- /* サブセクションがあれば一覧表示（階層セクション対応）*/}}
 {{- with .Sections }}
-<section class="home-section">
-  <h2 class="home-section-title">セクション</h2>
-  <ul class="post-list">
-    {{- range . }}
-    <li class="post-list-item">
-      <div class="post-title">
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-      </div>
-    </li>
-    {{- end }}
-  </ul>
-</section>
+<ul class="post-list">
+  {{- range . }}
+  <li class="post-list-item">
+    <div class="post-title">
+      <a href="{{ .Permalink }}">{{ .Title }}</a>
+    </div>
+  </li>
+  {{- end }}
+</ul>
 {{- end }}
 
-{{- /* ページネーターを使って記事一覧を表示 */}}
-{{- $paginator := .Paginate .Pages -}}
+{{- $paginator := .Paginate .RegularPages 25 -}}
 {{- if $paginator.Pages }}
 <ul class="post-list">
   {{- range $paginator.Pages }}
   <li class="post-list-item">
-    <div class="post-header">
-      <div class="post-meta">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-        {{- with .Params.tags }}
-        <ul class="tag-list">
-          {{- range . }}
-          <li class="tag-item"><a href="/tags/{{ urlize . }}/">{{ . }}</a></li>
-          {{- end }}
-        </ul>
+    <div class="post-meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+      {{- with .Params.tags }}
+      <ul class="tag-list">
+        {{- range . }}
+        <li class="tag-item"><a href="/tags/{{ urlize . }}/">{{ . }}</a></li>
         {{- end }}
-      </div>
-      <div class="post-title">
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-      </div>
+      </ul>
+      {{- end }}
+    </div>
+    <div class="post-title">
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
     </div>
   </li>
   {{- end }}
