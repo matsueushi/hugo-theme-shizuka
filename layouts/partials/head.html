@@ -42,3 +42,8 @@
 {{- with .Site.Params.favicon }}
 <link rel="icon" href="{{ . | absURL }}">
 {{- end }}
+
+{{- /* Google Analytics（本番のみ）*/}}
+{{- if not hugo.IsServer }}
+{{ template "_internal/google_analytics.html" . }}
+{{- end }}
