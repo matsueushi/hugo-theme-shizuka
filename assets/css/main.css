@@ -151,6 +151,10 @@ a:hover {
   margin-bottom: 0.25rem;
 }
 
+h1.post-title {
+  font-size: 1.5rem;
+}
+
 .post-title a {
   color: #2d2d2d;
   text-decoration: none;
@@ -312,7 +316,7 @@ a:hover {
    ページタイトル（セクション・タクソノミー共通）
    --------------------------------------------------------------------------- */
 .page-title {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   margin-top: 0;
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
