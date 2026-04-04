@@ -11,6 +11,7 @@
 
 {{- if $sections }}
   {{- $allPages := where .Site.RegularPages "Section" "in" $sections }}
+  <h2 class="home-section-title">最新記事</h2>
   <ul class="post-list">
     {{- range first 20 ($allPages.ByDate.Reverse) }}
     <li class="post-list-item">
