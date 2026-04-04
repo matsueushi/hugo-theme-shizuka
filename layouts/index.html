@@ -4,46 +4,41 @@
 {{- end }}
 
 {{- /*
-  メインセクションごとに最新記事を表示する。
-  hugo.toml の [params] mainSections で対象セクションを指定できる。
-  未指定の場合は Hugo デフォルト（記事数が最多のセクション）を使用。
+  mainSections に含まれる全記事を日付降順で一覧表示する。
+  各記事にセクション（ジャンル）をバッジとして表示。
 */}}
 {{- $sections := .Site.Params.mainSections | default (slice) -}}
 
 {{- if $sections }}
-  {{- range $sections }}
-  {{- $section := $.Site.GetPage (printf "/%s" .) }}
-  {{- with $section }}
-  <section class="home-section">
-    <h2 class="home-section-title">
-      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-    </h2>
-    <ul class="post-list">
-      {{- range first 5 .Pages }}
-      <li class="post-list-item">
-        <div class="post-meta">
-          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
-          {{- with .Params.tags }}
-          <ul class="tag-list">
-            {{- range . }}
-            <li class="tag-item"><a href="/tags/{{ urlize . }}/">{{ . }}</a></li>
-            {{- end }}
-          </ul>
+  {{- $allPages := where .Site.RegularPages "Section" "in" $sections }}
+  <ul class="post-list">
+    {{- range first 20 ($allPages.ByDate.Reverse) }}
+    <li class="post-list-item">
+      <div class="post-meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+        {{- $sectionSlug := .Section }}
+        {{- $sectionPage := .Site.GetPage (printf "/%s" .Section) }}
+        {{- with $sectionPage }}
+        <a class="section-badge section-badge--{{ $sectionSlug }}" href="{{ .RelPermalink }}">{{ .LinkTitle | default .Title }}</a>
+        {{- end }}
+        {{- with .Params.tags }}
+        <ul class="tag-list">
+          {{- range . }}
+          <li class="tag-item"><a href="/tags/{{ urlize . }}/">{{ . }}</a></li>
           {{- end }}
-        </div>
-        <div class="post-title">
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        </div>
-      </li>
-      {{- end }}
-    </ul>
-  </section>
-  {{- end }}
-  {{- end }}
+        </ul>
+        {{- end }}
+      </div>
+      <div class="post-title">
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      </div>
+    </li>
+    {{- end }}
+  </ul>
 {{- else }}
   {{- /* mainSections 未設定時：全記事を最新順で表示 */}}
   <ul class="post-list">
-    {{- range first 10 .Site.RegularPages }}
+    {{- range first 20 .Site.RegularPages }}
     <li class="post-list-item">
       <div class="post-meta">
         <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
