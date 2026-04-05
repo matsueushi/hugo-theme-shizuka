@@ -43,6 +43,17 @@
 <link rel="icon" href="{{ . | absURL }}">
 {{- end }}
 
+{{- /* MathJax */}}
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]'], ['$$', '$$']],
+    }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
 {{- /* Google Analytics（本番のみ）*/}}
 {{- if not hugo.IsServer }}
 {{ template "_internal/google_analytics.html" . }}
