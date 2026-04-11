@@ -8,7 +8,11 @@
     <div class="post-meta">
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
       {{- with .Section }}
-      <span><a href="{{ ($.Site.GetPage (printf "/%s" .)).RelPermalink }}">{{ ($.Site.GetPage (printf "/%s" .)).Title }}</a></span>
+      {{- $sectionSlug := . }}
+      {{- $sectionPage := $.Site.GetPage (printf "/%s" .) }}
+      {{- with $sectionPage }}
+      <a class="section-badge section-badge--{{ $sectionSlug }}" href="{{ .RelPermalink }}">{{ .LinkTitle | default .Title }}</a>
+      {{- end }}
       {{- end }}
     </div>
     <div class="post-title">
