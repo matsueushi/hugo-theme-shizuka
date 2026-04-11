@@ -1,5 +1,14 @@
 {{ define "main" }}
-<h1 class="page-title">{{ .Title }}</h1>
+<header class="post-header">
+  <h1 class="post-title">{{ .Title }}</h1>
+  {{- $sectionSlug := .Section }}
+  {{- $sectionPage := .Site.GetPage (printf "/%s" $sectionSlug) }}
+  {{- if and $sectionPage (ne $sectionPage.RelPermalink .RelPermalink) }}
+  <div class="post-meta">
+    <a class="section-badge section-badge--{{ $sectionSlug }}" href="{{ $sectionPage.RelPermalink }}">{{ $sectionPage.LinkTitle | default $sectionPage.Title }}</a>
+  </div>
+  {{- end }}
+</header>
 
 {{- with .Content }}
 <div class="post-content">{{ . }}</div>
