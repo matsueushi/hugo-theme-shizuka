@@ -39,6 +39,7 @@ body {
   max-width: 720px;
   margin: 0 auto;
   padding: 0 1rem;
+  overflow-x: hidden;
 }
 
 main {
@@ -231,6 +232,8 @@ h1.post-title {
    --------------------------------------------------------------------------- */
 .post-content {
   margin-top: 1.5rem;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .post-content img {
