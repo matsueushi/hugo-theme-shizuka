@@ -1,7 +1,24 @@
 /* =============================================================================
    main.css — hugo-theme-shizuka
    モバイルファースト、1カラム、最大幅 720px
+   配色モチーフ: 2000年前後のフリーペーパー／チャート誌（SLATE, CMJ 的な世界観）
    ============================================================================= */
+
+:root {
+  /* 紙・インク */
+  --paper:       #f6efdd;
+  --paper-alt:   #ece0c4;
+  --ink:         #23201a;
+  --ink-soft:    #5c5344;
+  --ink-faint:   #948a76;
+  --rule:        #d9cba9;
+  --rule-strong: #c9b98d;
+
+  /* アクセント（朱・からし） */
+  --accent:      #b5482f;
+  --accent-dark: #8f3a25;
+  --accent-2:    #b8862a;
+}
 
 /* ---------------------------------------------------------------------------
    リセット & ベース
@@ -20,8 +37,10 @@ body {
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Hiragino Sans,
     "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
-  color: #2d2d2d;
-  background: #fff;
+  color: var(--ink);
+  background-color: var(--paper);
+  /* ごく薄い紙の粒状ノイズ（外部リソースなしの inline SVG フィルタ） */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/></svg>");
   line-height: 1.8;
 }
 
@@ -51,7 +70,7 @@ main {
    ヘッダー
    --------------------------------------------------------------------------- */
 .site-header {
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 3px double var(--rule-strong);
   padding: 0.75rem 0;
 }
 
@@ -62,18 +81,18 @@ main {
 }
 
 .site-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
 }
 
 .site-title a {
-  color: #2d2d2d;
+  color: var(--ink);
   text-decoration: none;
 }
 
 .site-title a:hover {
-  color: #555;
+  color: var(--accent);
 }
 
 /* ナビゲーション */
@@ -88,12 +107,12 @@ main {
 }
 
 .site-nav a {
-  color: #555;
+  color: var(--ink-soft);
   text-decoration: none;
 }
 
 .site-nav a:hover {
-  color: #2d2d2d;
+  color: var(--accent);
   text-decoration: underline;
 }
 
@@ -101,15 +120,15 @@ main {
    フッター
    --------------------------------------------------------------------------- */
 .site-footer {
-  border-top: 1px solid #e5e5e5;
+  border-top: 3px double var(--rule-strong);
   padding: 1.25rem 0;
   font-size: 0.8rem;
-  color: #888;
+  color: var(--ink-faint);
   text-align: center;
 }
 
 .site-footer a {
-  color: #888;
+  color: var(--ink-faint);
 }
 
 /* ---------------------------------------------------------------------------
@@ -119,7 +138,8 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.4;
   margin-top: 2rem;
   margin-bottom: 0.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 0.01em;
 }
 
 h1 { font-size: 1.6rem; }
@@ -131,7 +151,7 @@ p {
 }
 
 a {
-  color: #3a6fb5;
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -157,21 +177,22 @@ h1.post-title {
 }
 
 .post-title a {
-  color: #2d2d2d;
+  color: var(--ink);
   text-decoration: none;
 }
 
 .post-title a:hover {
-  color: #3a6fb5;
+  color: var(--accent);
 }
 
 .post-meta {
   font-size: 0.8rem;
-  color: #888;
+  color: var(--ink-faint);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 .post-meta time {
@@ -179,12 +200,12 @@ h1.post-title {
 }
 
 /* ---------------------------------------------------------------------------
-   タグ
+   タグ（チケット半券風）
    --------------------------------------------------------------------------- */
 .tag-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem;
+  gap: 0.35rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -192,17 +213,25 @@ h1.post-title {
 
 .tag-item a {
   display: inline-block;
-  background: #f0f0f0;
-  color: #555;
-  border-radius: 3px;
-  padding: 0.1em 0.5em;
+  background: var(--paper-alt);
+  color: var(--ink-soft);
+  border: 1px dashed var(--rule-strong);
+  border-radius: 2px;
+  padding: 0.1em 0.55em;
   font-size: 0.75rem;
+  letter-spacing: 0.02em;
   text-decoration: none;
 }
 
+.tag-item a::before {
+  content: "#";
+  color: var(--ink-faint);
+}
+
 .tag-item a:hover {
-  background: #e0e0e0;
-  color: #2d2d2d;
+  background: var(--paper);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 /* ---------------------------------------------------------------------------
@@ -216,7 +245,7 @@ h1.post-title {
 
 .post-list-item {
   padding: 1rem 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px dashed var(--rule);
 }
 
 .post-list-item:first-child {
@@ -251,8 +280,8 @@ h1.post-title {
 .post-content blockquote {
   margin: 1.5rem 0;
   padding: 0.5rem 1rem;
-  border-left: 3px solid #ccc;
-  color: #666;
+  border-left: 3px solid var(--rule-strong);
+  color: var(--ink-soft);
 }
 
 .post-content blockquote p {
@@ -269,24 +298,25 @@ h1.post-title {
 .post-content th,
 .post-content td {
   padding: 0.4rem 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--rule);
   text-align: left;
 }
 
 .post-content th {
-  background: #f5f5f5;
-  font-weight: 600;
+  background: var(--paper-alt);
+  font-weight: 700;
 }
 
 .post-content hr {
   border: none;
-  border-top: 1px solid #eee;
+  border-top: 1px dashed var(--rule);
   margin: 2rem 0;
 }
 
 /* コードブロック */
 .post-content pre {
-  background: #f6f6f6;
+  background: var(--paper-alt);
+  border: 1px solid var(--rule);
   border-radius: 4px;
   padding: 1rem;
   overflow-x: auto;
@@ -301,7 +331,7 @@ h1.post-title {
 
 .post-content p code,
 .post-content li code {
-  background: #f0f0f0;
+  background: var(--paper-alt);
   padding: 0.1em 0.35em;
   border-radius: 3px;
 }
@@ -323,7 +353,15 @@ h1.post-title {
   margin-top: 0;
   margin-bottom: 1.5rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 3px double var(--rule-strong);
+}
+
+.page-title::before {
+  content: "■";
+  display: inline-block;
+  margin-right: 0.4em;
+  font-size: 0.7em;
+  color: var(--accent);
 }
 
 /* ---------------------------------------------------------------------------
@@ -340,22 +378,24 @@ h1.post-title {
 
 .taxonomy-list li a {
   display: inline-block;
-  background: #f0f0f0;
-  color: #555;
-  border-radius: 3px;
+  background: var(--paper-alt);
+  color: var(--ink-soft);
+  border: 1px dashed var(--rule-strong);
+  border-radius: 2px;
   padding: 0.2em 0.75em;
   font-size: 0.875rem;
   text-decoration: none;
 }
 
 .taxonomy-list li a:hover {
-  background: #e0e0e0;
-  color: #2d2d2d;
+  background: var(--paper);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .taxonomy-count {
   font-size: 0.75em;
-  color: #999;
+  color: var(--ink-faint);
   margin-left: 0.25em;
 }
 
@@ -375,50 +415,52 @@ h1.post-title {
 .pagination span {
   display: inline-block;
   padding: 0.3em 0.75em;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  color: #555;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  color: var(--ink-soft);
   text-decoration: none;
 }
 
 .pagination a:hover {
-  background: #f5f5f5;
-  color: #2d2d2d;
+  background: var(--paper-alt);
+  color: var(--ink);
 }
 
 .pagination .active {
-  background: #3a6fb5;
-  border-color: #3a6fb5;
-  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
 }
 
 .pagination .disabled {
-  color: #bbb;
+  color: var(--ink-faint);
+  opacity: 0.5;
   pointer-events: none;
 }
 
 /* ---------------------------------------------------------------------------
-   セクションバッジ（ジャンルラベル）
+   セクションバッジ（ジャンルラベル、スタンプ風）
    --------------------------------------------------------------------------- */
 .section-badge {
   display: inline-block;
   padding: 0.1em 0.55em;
-  border-radius: 3px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   text-decoration: none;
   white-space: nowrap;
-  background: #e0e0e0;
-  color: #444;
+  background: var(--paper-alt);
+  color: var(--ink-soft);
 }
 
 .section-badge:hover {
   text-decoration: none;
-  filter: brightness(0.93);
+  filter: brightness(0.95);
 }
 
-/* セクションごとの色 */
+/* セクションごとの色（従来のパステルトーンを維持） */
 .section-badge--diary       { background: #dbeafe; color: #1e40af; }
 .section-badge--music       { background: #fde68a; color: #92400e; }
 .section-badge--disc-review { background: #fce7f3; color: #9d174d; }
@@ -431,7 +473,7 @@ h1.post-title {
    ホームページ
    --------------------------------------------------------------------------- */
 .home-description {
-  color: #666;
+  color: var(--ink-soft);
   margin-bottom: 2rem;
   font-size: 0.95rem;
 }
@@ -442,13 +484,21 @@ h1.post-title {
 
 .home-section-title {
   font-size: 1rem;
-  font-weight: 700;
-  color: #888;
+  font-weight: 800;
+  color: var(--ink-soft);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin: 0 0 0.75rem;
   padding-bottom: 0.25rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px dashed var(--rule-strong);
+}
+
+.home-section-title::before {
+  content: "■";
+  display: inline-block;
+  margin-right: 0.4em;
+  font-size: 0.7em;
+  color: var(--accent);
 }
 
 .home-section-title a {
@@ -457,7 +507,7 @@ h1.post-title {
 }
 
 .home-section-title a:hover {
-  color: #555;
+  color: var(--accent);
 }
 
 /* ---------------------------------------------------------------------------
@@ -472,32 +522,33 @@ h1.post-title {
 .search-input {
   flex: 1;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  background: #fff;
   font-size: 1rem;
   font-family: inherit;
-  color: #2d2d2d;
+  color: var(--ink);
   outline: none;
 }
 
 .search-input:focus {
-  border-color: #3a6fb5;
-  box-shadow: 0 0 0 2px rgba(58, 111, 181, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(181, 72, 47, 0.15);
 }
 
 .search-button {
   padding: 0.5rem 1rem;
-  background: #3a6fb5;
-  color: #fff;
+  background: var(--accent);
+  color: var(--paper);
   border: none;
-  border-radius: 4px;
+  border-radius: 3px;
   font-size: 0.9rem;
   font-family: inherit;
   cursor: pointer;
 }
 
 .search-button:hover {
-  background: #2f5d99;
+  background: var(--accent-dark);
 }
 
 #search-results {
@@ -508,7 +559,7 @@ h1.post-title {
 
 #search-results li {
   padding: 0.75rem 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px dashed var(--rule);
 }
 
 #search-results li:last-child {
@@ -516,12 +567,12 @@ h1.post-title {
 }
 
 #search-results .result-title {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 #search-results .result-meta {
   font-size: 0.8rem;
-  color: #888;
+  color: var(--ink-faint);
   margin-top: 0.15rem;
 }
 
@@ -537,6 +588,7 @@ h1.post-title {
   padding-bottom: 56.25%; /* 16:9 */
   height: 0;
   overflow: hidden;
+  border: 1px solid var(--rule-strong);
 }
 
 .video-embed__ratio iframe {
