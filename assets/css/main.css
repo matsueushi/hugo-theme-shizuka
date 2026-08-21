@@ -274,7 +274,14 @@ h1.post-title {
 
 .post-content ul,
 .post-content ol {
-  margin: 0 0 1rem 1.5rem;
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+}
+
+.post-content li > ul,
+.post-content li > ol {
+  margin: 0.25rem 0 0;
+  padding-left: 1rem;
 }
 
 .post-content blockquote {
