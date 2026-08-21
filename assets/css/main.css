@@ -313,6 +313,12 @@ h1.post-title {
   margin: 2rem 0;
 }
 
+.post-content .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
 /* コードブロック */
 .post-content pre {
   background: var(--paper-alt);
