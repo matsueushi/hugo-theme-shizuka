@@ -1,9 +1,22 @@
-{{- $opts := dict "output" "htmlAndMathml" "displayMode" (eq .Type "block") }}
-{{- with try (transform.ToMath .Inner $opts) }}
-  {{- with .Err }}
-    {{- errorf "Unable to render mathematical markup to HTML using the transform.ToMath function. The KaTeX display engine threw the following error: %s: see %s." . $.Position }}
+{{- /* $ を inline delimiter に含めたことで本文中の通常のドル記号
+       (例: $100) も passthrough としてマッチしうる。math: true が
+       front matter で明示されたページでのみ KaTeX へ変換し、
+       それ以外ではリテラルな区切り文字付きテキストへ戻して
+       誤変換によるビルド失敗・意図しない数式描画を防ぐ。 */}}
+{{- if .Page.Params.math }}
+  {{- $opts := dict "output" "htmlAndMathml" "displayMode" (eq .Type "block") }}
+  {{- with try (transform.ToMath .Inner $opts) }}
+    {{- with .Err }}
+      {{- errorf "Unable to render mathematical markup to HTML using the transform.ToMath function. The KaTeX display engine threw the following error: %s: see %s." . $.Position }}
+    {{- else }}
+      {{- .Value }}
+      {{- $.Page.Store.Set "hasMath" true }}
+    {{- end }}
+  {{- end }}
+{{- else }}
+  {{- if eq .Type "block" }}
+    {{- printf "$$%s$$" .Inner }}
   {{- else }}
-    {{- .Value }}
-    {{- $.Page.Store.Set "hasMath" true }}
+    {{- printf "$%s$" .Inner }}
   {{- end }}
 {{- end -}}
